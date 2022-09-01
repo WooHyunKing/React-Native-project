@@ -25,19 +25,14 @@ export default function App() {
       //   alignItems: "center",
       //   justifyContent: "center",
       // }}
-      style={styles.container}
+
+      style={{ flex: 1 }} //View는 기본적으로 Flex Container, 방향 기본값은 Column(웹이랑 반대)
+      //React Native에서는 너비와 넓이에 기반해서 레이아웃을 만들지 X(스크린 사이즈에 따라 다르기 때문)
+      //width와 height가 아닌 Flex의 비율만 사용해서 레이아웃을 조정
     >
-      <Text
-        // style={{
-        //   fontSize: 100,
-        //   color: "red",
-        // }}
-        style={styles.text}
-      >
-        Hello World!
-      </Text>
-      {/* StatusBar는 제 3자 패키지(third-party components) */}
-      <StatusBar style="dark" />
+      <View style={{ flex: 1, backgroundColor: "tomato" }}></View>
+      <View style={{ flex: 1, backgroundColor: "teal" }}></View>
+      <View style={{ flex: 1, backgroundColor: "orange" }}></View>
     </View>
   );
 }

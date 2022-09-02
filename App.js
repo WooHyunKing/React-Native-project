@@ -26,13 +26,21 @@ export default function App() {
       //   justifyContent: "center",
       // }}
 
-      style={{ flex: 1 }} //View는 기본적으로 Flex Container, 방향 기본값은 Column(웹이랑 반대)
+      style={styles.container} //View는 기본적으로 Flex Container, 방향 기본값은 Column(웹이랑 반대)
       //React Native에서는 너비와 넓이에 기반해서 레이아웃을 만들지 X(스크린 사이즈에 따라 다르기 때문)
       //width와 height가 아닌 Flex의 비율만 사용해서 레이아웃을 조정
     >
-      <View style={{ flex: 1, backgroundColor: "tomato" }}></View>
-      <View style={{ flex: 1, backgroundColor: "teal" }}></View>
-      <View style={{ flex: 1, backgroundColor: "orange" }}></View>
+      <View style={styles.city}>
+        <Text style={styles.cityName}>Seoul</Text>
+      </View>
+      <View>
+        <View style={styles.weather}>
+          <View style={styles.day}>
+            <Text style={styles.temp}>27</Text>
+            <Text style={styles.description}>Sunny</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
@@ -41,12 +49,34 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "tomato",
   },
   text: {
     fontSize: 100,
     color: "black",
+  },
+  city: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cityName: {
+    fontSize: 68,
+    fontWeight: "500",
+  },
+  weather: {
+    flex: 3,
+  },
+  day: {
+    flex: 1,
+    alignItems: "center",
+  },
+  temp: {
+    marginTop: 50,
+    fontSize: 178,
+  },
+  description: {
+    marginTop: -30,
+    fontSize: 60,
   },
 });

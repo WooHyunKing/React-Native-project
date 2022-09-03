@@ -1,4 +1,6 @@
+import * as Location from "expo-location";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 
 //Dimensions API로 각 사용자의 스크린의 크기를 알 수 있음 !
@@ -6,6 +8,33 @@ import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
+  const [city, setCity] = useState("Loading...");
+  const [location, setLocation] = useState();
+  const [ok, setOk] = useState(true);
+
+  const ask = async () => {
+    const { granted } = await Location.requestForegroundPermissionsAsync();
+    if (!granted) {
+      setOk(false);
+    }
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    //Reverse geocode
+    const location = await Location.reverseGeocodeAsync(
+      {
+        latitude,
+        longitude,
+      },
+      { useGoogleMaps: false }
+    );
+    setCity(location[0].city);
+  };
+
+  useEffect(() => {
+    ask();
+  }, []);
+
   return (
     //리액트 네이티브는 IOS와 안드로이드와 같은 운영체제를 구성하기 위한 개발자들을 위한 인터페이스
     //브라우저와는 다르게 CSS에서 실수를 하면 개발자에게 오류를 표시하면서 알려줌
@@ -35,7 +64,7 @@ export default function App() {
       //width와 height가 아닌 Flex의 비율만 사용해서 레이아웃을 조정
     >
       <View style={styles.city}>
-        <Text style={styles.cityName}>Seoul</Text>
+        <Text style={styles.cityName}>{city}</Text>
       </View>
       {/* ScrollView 컴포넌트를 사용하면 스크롤을 통해 넘길 수 있음
       Horizontal을 사용하면 수직이 아니라 수평으로 요소들을 렌더링, 이때는 style이 아니라 contentContainerStyle로 스타일을 받아야함 */}
@@ -85,9 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 68,
     fontWeight: "500",
   },
-  weather: {
-    backgroundColor: "blue",
-  },
+  weather: {},
   day: {
     width: SCREEN_WIDTH,
     alignItems: "center",

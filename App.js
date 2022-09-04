@@ -1,6 +1,7 @@
 import * as Location from "expo-location";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+import { Fontisto } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -20,6 +21,16 @@ export default function App() {
   const [ok, setOk] = useState(true);
 
   const API_KEY = "a73804592d8a4cfd13d68c5faee6eef4";
+
+  const icons = {
+    Clouds: "cloudy",
+    Clear: "day-sunny",
+    Atmosphere: "cloudy-gusts",
+    Snow: "snow",
+    Rain: "rains",
+    Drizzle: "rain",
+    Thunderstorm: "lightning",
+  };
 
   const getWeather = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -94,7 +105,7 @@ export default function App() {
         contentContainerStyle={styles.weather}
       >
         {days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={{ ...styles.day, alignItems: "center" }}>
             <ActivityIndicator
               color="white"
               size="large"
@@ -106,9 +117,17 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
-              </Text>
+              <View style={styles.weather}>
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={68}
+                  color="white"
+                />
+              </View>
+
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}> {day.weather[0].description}</Text>
             </View>
@@ -127,31 +146,45 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 100,
-    color: "black",
+    color: "white",
   },
   city: {
-    flex: 1,
+    flex: 1.2,
     justifyContent: "center",
     alignItems: "center",
   },
   cityName: {
-    fontSize: 68,
+    fontSize: 58,
     fontWeight: "500",
+    color: "white",
   },
-  weather: {},
+  weather: {
+    flexDirection: "row",
+    alignItems: "",
+    //width:"100%",
+    justifyContent: "space-between",
+  },
   day: {
     width: SCREEN_WIDTH,
-    alignItems: "center",
+    alignItems: "flex-start",
+    paddingHorizontal: 20,
   },
   temp: {
     marginTop: 50,
-    fontSize: 178,
+    fontWeight: "600",
+    fontSize: 100,
+    color: "white",
   },
   description: {
-    marginTop: -30,
-    fontSize: 60,
+    marginTop: -10,
+    fontSize: 30,
+    color: "white",
+    fontWeight: "500",
   },
   tinyText: {
-    fontSize: 20,
+    fontSize: 25,
+    marginTop: -5,
+    color: "white",
+    fontWeight: "500",
   },
 });
